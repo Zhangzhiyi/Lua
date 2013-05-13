@@ -86,5 +86,7 @@ local function main()
 	print(value)
 	assert(value, "No this message in MessageDefine.lua!")
 	
+	local radian = math.atan2(1,1) --atan2求的是弧度
+	print(radian)
 end
 main()
