@@ -75,7 +75,7 @@ local function main()
 	print("len:" .. len); -- 2
 	
 	print(package.path);
-	flag = true;
+	local flag = true;
 	print(tostring(flag))
 	
 	local hex = 0x11 -- 十六进制
@@ -85,6 +85,16 @@ local function main()
 	local value = _G["global"]
 	print(value)
 	assert(value, "No this message in MessageDefine.lua!")
+	
+	local radian = math.atan2(1,1) --atan2求的是弧度
+	print(radian)
+	
+	local flag2 = false
+	
+	if flag2 ~= nil then
+		local isEnable = true
+		print(isEnable)
+	end
 	
 end
 main()
