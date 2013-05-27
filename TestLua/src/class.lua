@@ -35,7 +35,10 @@ function SpecialAccount:getProperty ()
     return self.property or 0
 end
 function SpecialAccount:showCallMethod(str)
-	print("SpecialAccount:" .. str)
+	print("SpecialAccount:showCallMethod " .. str)
+end
+function SpecialAccount.showCallMethod2(str)
+	print("SpecialAccount.showCallMethod2 " .. str)
 end
 function main()
 --	Account:deposit(100);
@@ -65,8 +68,12 @@ function main()
 	--另一种调用方法，直接获取类的方法变量再调用
 	local method = SpecialAccount["showCallMethod"]
 	method(SpecialAccount, "12312931")
+	--注意function的. 和 ：的区别
+	local method2 = SpecialAccount["showCallMethod2"]
+	method2("showCallMethod2")
+	
 	-- 注意：方法Account.a(content)不是用":"，
 	-- 所以s:a("111111")相当于Account.a(SpecialAccount，content)就会报错
-	s:a("111111")
+	s.a("111111")
 end
 main()
