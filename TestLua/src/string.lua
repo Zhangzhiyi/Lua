@@ -47,17 +47,23 @@ local function main()
 	print(s, count)          --> aaxx lii
 
 
-	local socket = require("socket")
-	local http = require("socket.http")
-	local body, code, headers = http.request("http://192.168.162.34/autoUPD/10/filelist.txt");
-	if code == 200 then
-		print("body:\n" .. body);
-	end
-
+--[[ 
+	string.char函数和string.byte函数用来将字符在字符和数字之间转换。string.char获取0个或多个整数，
+	将每一个数字转换成字符，然后返回一个所有这些字符连接起来的字符串。string.byte(s, i)将字符串s的
+	第i个字符的转换成整数；第二个参数是可选的，缺省情况下i=1。
+--]]	
+	print(string.char(97))                    --> a
+	i = 99; 
+	print(string.char(i, i+1, i+2))   --> cde
+	print(string.byte("abc"))                 --> 97
+	print(string.byte("abc", 2))              --> 98
+	print(string.byte("abc", -1))             --> 99
+	
+	
 	local text = "12345"
 	print(#text)--输入字符串长度
 	
-	local format = string.format("icon_gift_%d.png", 1)
+	local format = string.format("icon_gift_%d.png", 0)
 	print(format)--输入字符串长度
 end
 main()
