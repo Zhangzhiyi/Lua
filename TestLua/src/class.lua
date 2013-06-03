@@ -40,7 +40,7 @@ end
 function SpecialAccount.showCallMethod2(str)
 	print("SpecialAccount.showCallMethod2 " .. str)
 end
-function main()
+local function main()
 --	Account:deposit(100);
 --	print(Account.balance);
 --	Account.withdraw(Account, 50);

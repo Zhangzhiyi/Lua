@@ -1,4 +1,4 @@
-require "print"
+require "PrintUtils"
 function clear(t) --清空表
 	if t then
 		for k,v in ipairs(t) do
