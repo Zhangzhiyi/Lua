@@ -96,5 +96,7 @@ local function main()
 		print(isEnable)
 	end
 	
+	--function类型数据
+	local fun = function() print("function") end
 end
 main()
