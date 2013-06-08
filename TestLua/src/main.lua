@@ -98,5 +98,7 @@ local function main()
 	
 	--function类型数据
 	local fun = function() print("function") end
+	fun()
+	
 end
 main()

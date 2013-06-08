@@ -61,9 +61,18 @@ local function main()
 	
 	
 	local text = "12345"
-	print(#text)--输入字符串长度
+	print(#text)--输出字符串长度
 	
 	local format = string.format("icon_gift_%d.png", 0)
-	print(format)--输入字符串长度
+	print(format)
+	
+	local ch = "一二三四五" --Lua不具备中文处理能力，要用unicode库
+	local len = #ch  -- 15
+	print(ch .. "len:" .. len)
+	 
+	local function tag(tag)
+		print(tag)
+	end
+	tag("tag") -- 参数和function同名不影响
 end
 main()
