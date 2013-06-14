@@ -30,9 +30,14 @@ local function main()
 	print(i, j)                        --> 1    5
 	print(string.sub(s, i, j))         --> hello
 	print(string.find(s, "world"))     --> 7    11
-	i, j = string.find(s, "l")
+	i, j= string.find(s, "l")
 	print(i, j)                        --> 3    3
 	print(string.find(s, "lll"))       --> nil
+	
+	local pair = "name = Anna"
+	local start, over, key, value = string.find(pair, "(%a+)%s*=%s*(%a+)")
+	print(start, over, key, value) -- 1,  11, name  Anna
+	
 	--string.gsub函数有三个参数：目标串，模式串，替换串。他基本作用是用来查找匹配模式的串，并将使用替换串其替换掉,string.gsub的第二个返回值表示他进行替换操作的次数：
 	s, count = string.gsub("Lua is cute", "cute", "great")
 	print(s, count)      --> Lua is great
@@ -42,7 +47,7 @@ local function main()
 	print(s, count)      --> Lua is great
 	--第四个参数是可选的，用来限制替换的字符次数:
 	s, count = string.gsub("aall lii", "l", "x", 5)
-	print(s, count)          --> aaxl lii
+	print(s, count)          --> aaxx xii
 	s, count = string.gsub("aall lii", "l", "x", 2)
 	print(s, count)          --> aaxx lii
 
@@ -59,9 +64,15 @@ local function main()
 	print(string.byte("abc", 2))              --> 98
 	print(string.byte("abc", -1))             --> 99
 	
-	
 	local text = "12345"
 	print(#text)--输出字符串长度
+	
+	local reptext = string.rep(text, 3) --重复连接字符串，第二个参数是连接次数
+	print(reptext)
+	
+	local text2 = "一二三四五"
+	local reptext2 = string.rep(text2, 3) --重复连接字符串，第二个参数是连接次数
+	print(reptext2)
 	
 	local format = string.format("icon_gift_%d.png", 0)
 	print(format)
