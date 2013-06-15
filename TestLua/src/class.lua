@@ -5,6 +5,9 @@ Account = {balance = 0}
 function Account.a(content)
 	print("Account.a()" .. content)
 end
+function Account.show()
+	print("Account.show()")
+end
 function Account:deposit (v)
     self.balance = self.balance + v
 end
