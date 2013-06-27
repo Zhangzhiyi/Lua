@@ -11,4 +11,6 @@ function bar()
   foo()
   baz()
   print "bar"
+  
+  mo = 2;
 end
