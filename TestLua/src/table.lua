@@ -37,7 +37,7 @@ local function main()
 	local t1 = {1, 2, 3};
 	print("num:=" .. table.getn(t1)); -- num:=3
 	print("num:=" .. #t1); -- num:=3
-	
+	table.remove(t1, 2);  --用remove后面的key会上移， 如果t1[2] = nil后面的key是不会上移的
 	
 	local w1 = {name = "Tom" , age = "24"};
 	local w2 = {name = "Tom" , age = "24"};

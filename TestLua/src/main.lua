@@ -38,6 +38,10 @@ local function main()
 	for i = 5, 1, -1  do
 		print("i is now "..i);
 	end
+	
+	for i = 1, -1 do
+		print("i is now "..i);
+	end
 	funky_print("one", "two");
 	
 	--Lua是动态类型语言，变量不要类型定义。Lua中有8个基本类型分别为：nil、boolean、number、string、userdata、function、thread和table。函数type可以测试给定变量或者值的类型。
@@ -99,6 +103,5 @@ local function main()
 	--function类型数据
 	local fun = function() print("function") end
 	fun()
-	
 end
 main()
