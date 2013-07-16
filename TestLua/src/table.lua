@@ -86,5 +86,6 @@ local function main()
 	removeAll(testRemoveAll);
 	print_table(testRemoveAll); --没有完全清空，还有输出
 	print("testClear num:=" .. #testRemoveAll);
+	
 end
 main()

@@ -8,5 +8,11 @@ local function main()
 	
 	end
 	print(os.clock()) --读取系统时钟，以秒为单位。表示从系统启动到当前时刻所过去的秒数
+	
+	math.randomseed(os.time());
+	for i = 1, 10 do
+		print(math.random(100));
+	end
+	
 end
 main()
