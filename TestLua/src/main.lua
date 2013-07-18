@@ -103,5 +103,7 @@ local function main()
 	--function类型数据
 	local fun = function() print("function") end
 	fun()
+	local funTable = {fun = "function"};  --function数据类型也可以当table的key
+	print(funTable.fun);
 end
 main()

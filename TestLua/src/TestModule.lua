@@ -18,6 +18,9 @@ local function main()
 	--req.baz()	baz()是私有函数，访问不了
 	gtest()  --全局函数
 	
-	
+	local t1 = mymodule.buildUI(); -- {1, 2, 3}
+	local t2 = mymodule.buildUI2(); --{1, 10, 3}  t1也跟着改变了
+	local t3 = mymodule.buildUI3(); --{5, 6, 7}  uiInstance赋值了一个新的table了，不影响t1, t2
+	print("end"); 
 end
 main()
