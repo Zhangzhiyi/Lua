@@ -61,7 +61,7 @@ local function main()
 		print(k .. " " .. v);
 	end
 	table.insert(t2, 4);
-	print("t2 num:=" .. #t2); -- num:=4
+	print("t2 num:=" .. #t2); -- num:=4   {1 = 1, 3 = 3, 4 = 4}
 	
 	local w1 = {name = "Tom" , age = "24"};
 	local w2 = {name = "Tom" , age = "24"};
@@ -86,5 +86,6 @@ local function main()
 	removeAll(testRemoveAll);
 	print_table(testRemoveAll); --没有完全清空，还有输出
 	print("testClear num:=" .. #testRemoveAll);
+	
 end
 main()

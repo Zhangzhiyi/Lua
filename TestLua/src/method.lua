@@ -1,8 +1,8 @@
 
-function add(x)
+local function add(x)
 	x = x + 1;
 end
-function table_add(t)
+local function table_add(t)
 	t.x = t.x + 1;
 end
 local function main()
@@ -14,19 +14,25 @@ local function main()
 	end)
 	print(names[1]);
 	
-	local widget = {{name = "ImageButton", priority = 1}, {name = "TextButton", priority = 2}, {name = "ScrollView", priority = 3}};
+	local widget = {{name = "ImageButton", priority = 3}, {name = "TextButton", priority = 2}, {name = "ScrollView", priority = 1}};
 	local function sortPrority(n1, n2)
-		return widget[n1].priority < widget[n2].priority
+		return n1.priority < n2.priority;
 	end
 	table.sort(widget, sortPrority);
-
+	print(widget[1].name)
 	
-	local result = 1; 
-	add(result);	--值传递
-	print(result); -- 1  
+	local result = 1;
+	add(result);
+	print(result); -- 1
 	
 	local t = {x = 10};
-	table_add(t);	--引用传递
+	table_add(t);
 	print(t.x); -- 11
+	
+	local skill = {{"one"}, "two", "three"};
+	local s1 = skill[1];
+	local s2 = skill[2];
+	skill[1] = s2;
+	print(s1);
 end
 main()
