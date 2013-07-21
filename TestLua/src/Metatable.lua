@@ -1,22 +1,29 @@
-c = {};
+require "PrintUtils"
+c = {name = "zhangzhiyi", age = 24};
 c.__add = function (op1, op2)
 	for _, item in ipairs(op2) do
 		table.insert(op1,item);
 	end
 	return op1;
 end
-function print_table(t) --打印有下表索引的值
-	for k,v in pairs(t) do
-		print(k, v);
-	end
-end
 local function main()
 	local a = {5, 6};
 	local b = {7, 8};
-	local metable = getmetatable(a) --获取元方法
+	local metable = getmetatable(a) --获取元方法  
+	if metable then
+		print_table(metable);
+	else
+		print("metable = nil");
+	end
+	--print_table(getmetatable(c));  --报错
 	setmetatable(a,c);  --如果在a寻找到__add元方法，就进行操作，否则继续在b中寻找
+	print_table(getmetatable(a));
+	c.__index = c;
+	--print_table(getmetatable(c));  --报错
+	print(a.name);
 	--setmetatable(b,c);
 	metable = getmetatable(a)
+	print_table(metable);
 	a[3] = 66
 	local d = a + b;
 	print_table(d);

@@ -16,6 +16,7 @@ function Account:withdraw(v)
 end
 function Account:new(obj) --构造一个Account的对象
 	obj = obj or {};
+	
 	setmetatable(obj,self);
 	self.__index = self;
 	return obj;
