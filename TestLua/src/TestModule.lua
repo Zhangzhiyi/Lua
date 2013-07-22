@@ -13,7 +13,11 @@ local function main()
 	print(mymodule.mo); --mo是在bar()函数定义的，也是加到mymodule里面去了
 	print(mymodule.key);
 	print("---------require----------")
+	local isLoader = package.loaded["require"]; --判断文件是否已经加载,如果为nil就是没有加载
+	print(isLoader);
 	local req = require("require")
+	local isLoader = package.loaded["require"]; --返回require文件的返回值, 如果文件没有返回值，就直接会返回true
+	print(isLoader); -- 输出table 
 	req.bar()
 	--req.baz()	baz()是私有函数，访问不了
 	gtest()  --全局函数

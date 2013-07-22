@@ -1,4 +1,4 @@
-require "PrintUtils"
+local p = require "PrintUtils"
 
 -- 如果以...为参数, 则表示参数的数量不定.
 -- 参数将会自动存储到一个叫arg的table中.
