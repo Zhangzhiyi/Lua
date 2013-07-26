@@ -30,7 +30,7 @@ local function main()
 	end;
 	--metatable.__index = proto; 与上面等价   __index 可以是function 或者 table
 	local cmd = {x = 1000};
-	setmetatable(cmd, metatable);
+	local cmd2 = setmetatable(cmd, metatable);
 	print(cmd.x);   -- 1000   查找cmd是否有x的键值，有则返回
 	print(cmd.y);	-- 0     查找cmd是否有y的键值，没有则去搜索metatable的__index
 end

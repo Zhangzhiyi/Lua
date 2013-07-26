@@ -15,10 +15,13 @@ local function main()
 	print("---------require----------")
 	local isLoader = package.loaded["require"]; --判断文件是否已经加载,如果为nil就是没有加载
 	print(isLoader);
-	local req = require("require")
+	local req = require("require");
 	local isLoader = package.loaded["require"]; --返回require文件的返回值, 如果文件没有返回值，就直接会返回true
 	print(isLoader); -- 输出table 
 	req.bar()
+	req.setX(111);
+	local req2 = require("require");  -- req 和 req2的引用是一样的，是同一个表
+	req2.foo(); -- foo 111
 	--req.baz()	baz()是私有函数，访问不了
 	gtest()  --全局函数
 	
