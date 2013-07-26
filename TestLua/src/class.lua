@@ -1,3 +1,4 @@
+require "functions"
 Account = {balance = 0}
 --冒号的效果相当于在函数定义和函数调用的时候，增加一个额外的隐藏参数。
 --这种方式只是提供了一种方便的语法，实际上并没有什么新的内容。
@@ -44,6 +45,18 @@ end
 function SpecialAccount.showCallMethod2(str)
 	print("SpecialAccount.showCallMethod2 " .. str)
 end
+Person = class("Person")
+function Person:name()
+	print("I'm a Person");
+end
+Teacher = class("Teacher", Person)
+function Teacher:name()
+	Teacher.super.name(self);
+	--self.super.name(self);  --如果Student调用name()方法，这样会出现死循环， 因为self是Student, self.super是Teacher，就会递归调用name()方法了
+	print("I'm a Teacher");
+end
+Student = class("Student", Teacher)
+
 local function main()
 --	Account:deposit(100);
 --	print(Account.balance);
@@ -79,5 +92,13 @@ local function main()
 	-- 注意：方法Account.a(content)不是用":"，
 	-- 所以s:a("111111")相当于Account.a(SpecialAccount，content)就会报错
 	s.a("111111")
+	
+	local student = Student.new();
+	student:name();
+	
+	 local dest = {a = 1, b = 2}
+    local src  = {a = 3, c = 3, d = 4}
+    table.merge(dest, src)	-- dest = {a = 1, b = 2, c = 3, d = 4}
+     print(dest.a)
 end
 main()

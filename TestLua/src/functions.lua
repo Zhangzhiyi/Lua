@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 ]]
 
+local tonumber_ = tonumber
 --[[--
 
 Convert to number.
@@ -32,9 +33,8 @@ Convert to number.
 @return number
 
 ]]
-function _n(v)
-    v = tonumber(v)
-    return v or 0
+function tonumber(v, base)
+    return tonumber_(v, base) or 0
 end
 
 --[[--
@@ -45,20 +45,8 @@ Convert to integer.
 @return number(integer)
 
 ]]
-function _i(v)
-    return math.round(_n(v))
-end
-
---[[--
-
-Convert to string.
-
-@param mixed v
-@return string
-
-]]
-function _s(v)
-    return tostring(v)
+function toint(v)
+    return math.round(tonumber(v))
 end
 
 --[[--
@@ -69,7 +57,7 @@ Convert to boolean.
 @return boolean
 
 ]]
-function _b(v)
+function tobool(v)
     return (v ~= nil and v ~= false)
 end
 
@@ -81,7 +69,7 @@ Convert to table.
 @return table
 
 ]]
-function _t(v)
+function totable(v)
     if type(v) ~= "table" then v = {} end
     return v
 end
@@ -197,49 +185,73 @@ Create an class.
 
 ]]
 function class(classname, super)
-    local cls
     local superType = type(super)
+    local cls
 
-    if superType == "function" or (superType == "table" and super.type == 1) then
+    if superType ~= "function" and superType ~= "table" then
+        superType = nil
+        super = nil
+    end
+
+    if superType == "function" or (super and super.__ctype == 1) then
+        -- inherited from native C++ Object
         cls = {}
-        cls.classname = classname
-        cls.type      = 1 -- native
 
-        if superType == "table" and super.type == 1 then
-            cls.create = super.create
-            cls.super = super
+        if superType == "table" then
+            -- copy fields from super
+            for k,v in pairs(super) do cls[k] = v end
+            cls.__create = super.__create
+            cls.super    = super
         else
-            cls.create = super
+            cls.__create = super
+            cls.ctor = function() end
         end
+
+        cls.__cname = classname
+        cls.__ctype = 1
+		cls.__index = cls
 
         function cls.new(...)
-            local instance = cls.create()
-            tolua.setpeer(instance, cls.super)
-            tolua.setpeer(instance, cls)
+            local instance = cls.__create(...);
+			
+			
+            -- copy fields from class to native object
+            for k,v in pairs(cls) do instance[k] = v end
             instance.class = cls
-            if cls.ctor then instance:ctor(...) end
+            instance:ctor(...)
             return instance
         end
+
     else
+        -- inherited from Lua Object
         if super then
-            cls = clone(super)
+            cls = clone(super)		
+            cls.super = super
         else
-            cls = {}
+            cls = {ctor = function() end}
         end
-        cls.super     = super
-        cls.classname = classname
-        cls.type      = 2 -- lua
-        cls.__index   = cls
+
+        cls.__cname = classname
+        cls.__ctype = 2 -- lua
+        cls.__index = cls
 
         function cls.new(...)
             local instance = setmetatable({}, cls)
             instance.class = cls
-            if cls.ctor then instance:ctor(...) end
+            instance:ctor(...)
             return instance
         end
     end
 
     return cls
+end
+function inherit(sub,super)
+     setmetatable(sub,
+     { __index=function(t,k)
+             local ret=super[k]
+             sub[k]=ret
+             return ret
+     end } )
 end
 --[[--
 
@@ -328,11 +340,22 @@ Write a string to a file, or return FALSE on failure.
 
 @param string path
 @param string content
+@param string mode
 @return boolean
 
+### Note:
+The mode string can be any of the following:
+    "r": read mode
+    "w": write mode;
+    "a": append mode;
+    "r+": update mode, all previous data is preserved;
+    "w+": update mode, all previous data is erased; (the default);
+    "a+": append update mode, previous data is preserved, writing is only allowed at the end of file.
+
 ]]
-function io.writefile(path, content)
-    local file = io.open(path, "w+")
+function io.writefile(path, content, mode)
+    mode = mode or "w+"
+    local file = io.open(path, mode)
     if file then
         if file:write(content) == nil then return false end
         io.close(file)
@@ -340,70 +363,6 @@ function io.writefile(path, content)
     else
         return false
     end
-end
-
---[[--
-
-Returns information about a file path.
-
-**Usage:**
-
-    local path = "/var/app/test/abc.png"
-    local pathinfo  = io.pathinfo(path)
-    -- pathinfo.dirname  = "/var/app/test/"
-    -- pathinfo.filename = "abc.png"
-    -- pathinfo.basename = "abc"
-    -- pathinfo.extname  = ".png"
-
-
-@param string path
-@return table
-
-]]
-function io.pathinfo(path)
-    local pos = string.len(path)
-    local extpos = pos + 1
-    while pos > 0 do
-        local b = string.byte(path, pos)
-        if b == 46 then -- 46 = char "."
-            extpos = pos
-        elseif b == 47 then -- 47 = char "/"
-            break
-        end
-        pos = pos - 1
-    end
-
-    local dirname = string.sub(path, 1, pos)
-    local filename = string.sub(path, pos + 1)
-    extpos = extpos - pos
-    local basename = string.sub(filename, 1, extpos - 1)
-    local extname = string.sub(filename, extpos)
-    return {
-        dirname = dirname,
-        filename = filename,
-        basename = basename,
-        extname = extname
-    }
-end
-
---[[--
-
-Gets file size, or return FALSE on failure.
-
-@param string path
-@return number(integer)
-
-]]
-function io.filesize(path)
-    local size = false
-    local file = io.open(path, "r")
-    if file then
-        local current = file:seek()
-        size = file:seek("end")
-        file:seek("set", current)
-        io.close(file)
-    end
-    return size
 end
 
 --[[--
@@ -490,6 +449,45 @@ function table.merge(dest, src)
     end
 end
 
+function table.index(dest,item) --查找数组下标, 只对下标是数字有效，而且是连续的
+	if item then
+		for k,v in ipairs(dest) do
+			if v == item then
+				return k;
+			end
+		end
+	end
+	return -1;
+end
+function table.removeItem(dest,item) --删除数组值
+	local index = table.index(dest,item);
+	if index ~= -1 then
+		table.remove(dest,index);
+	end
+end
+function table.find(dest, item)	-- 查找key - value 键值对的key， 否则返回nil;
+	if item then
+		for k,v in pairs(dest) do
+			if v == item then
+				return k;
+			end
+		end
+	end
+	return nil;
+end
+function table.deleteItem(dest, item) --删除key - value键值对
+	local key = table.find(dest, item);
+	if key then
+		dest[key] = nil;
+	end
+end
+function table.clear(dest) -- 清除表
+	if dest then
+		for k,v in pairs(dest) do
+			dest[k] = nil
+		end
+	end
+end
 --[[--
 
 Convert special characters to HTML entities.
@@ -560,6 +558,7 @@ Split a string by string.
 ]]
 function string.split(str, delimiter)
     if (delimiter=='') then return false end
+	if str == nil or str == "" then return {} end
     local pos,arr = 0, {}
     -- for each divider found
     for st,sp in function() return string.find(str, delimiter, pos, true) end do
@@ -567,7 +566,7 @@ function string.split(str, delimiter)
         pos = sp + 1
     end
     table.insert(arr, string.sub(str, pos))
-    return arr
+    return arr	
 end
 
 --[[--
@@ -579,7 +578,7 @@ Strip whitespace (or other characters) from the beginning of a string.
 
 ]]
 function string.ltrim(str)
-    return string.gsub(str, "^[ \t]+", "")
+    return string.gsub(str, "^[ \t\n\r]+", "")
 end
 
 --[[--
@@ -591,7 +590,7 @@ Strip whitespace (or other characters) from the end of a string.
 
 ]]
 function string.rtrim(str)
-    return string.gsub(str, "[ \t]+$", "")
+    return string.gsub(str, "[ \t\n\r]+$", "")
 end
 
 --[[--
@@ -603,8 +602,8 @@ Strip whitespace (or other characters) from the beginning and end of a string.
 
 ]]
 function string.trim(str)
-    str = string.gsub(str, "^[ \t]+", "")
-    return string.gsub(str, "[ \t]+$", "")
+    str = string.gsub(str, "^[ \t\n\r]+", "")
+    return string.gsub(str, "[ \t\n\r]+$", "")
 end
 
 --[[--
@@ -688,7 +687,7 @@ Return formatted string with a comma (",") between every group of thousands.
 
 ]]
 function string.formatNumberThousands(num)
-    local formatted = tostring(_n(num))
+    local formatted = tostring(tonumber(num))
     while true do
         formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
         if k == 0 then break end
