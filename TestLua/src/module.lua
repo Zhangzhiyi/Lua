@@ -27,3 +27,11 @@ function buildUI3()
 	uiInstance = {5, 6, 7};
 	return uiInstance;
 end
+function assignNil()
+	uiInstance = nil;
+end
+function clear()
+	for k, v in ipairs(uiInstance) do
+		uiInstance[k] = nil;
+	end
+end

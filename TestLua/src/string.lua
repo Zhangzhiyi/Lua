@@ -21,7 +21,8 @@ local function main()
 	--记住：Lua中的字符串是恒定不变的。String.sub函数以及Lua中其他的字符串操作函数都不会改变字符串的值，而是返回一个新的字符串
 	local s = "[in brackets]"
 	print(string.sub(s, 2, -2))     --> in brackets
-	local str = string.sub(s, 2, 1)
+	print(string.sub(s, 2, 2))		--> i
+	local str = string.sub(s, 2, 1) --> start 大于 end， 返回空字符串 
 	print("str = " .. str .. " len = " .. string.len(str)) -- 空字符串
 	--string.find的基本应用就是用来在目标串（subject string）内搜索匹配指定的模式的串。函数如果找到匹配的串返回他的位置，否则返回nil.
 	--最简单的模式就是一个单词，仅仅匹配单词本身。比如，模式'hello'仅仅匹配目标串中的"hello"。当查找到模式的时候，函数返回两个值：匹配串开始索引和结束索引。

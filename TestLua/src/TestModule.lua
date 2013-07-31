@@ -27,7 +27,9 @@ local function main()
 	
 	local t1 = mymodule.buildUI(); -- {1, 2, 3}
 	local t2 = mymodule.buildUI2(); --{1, 10, 3}  t1也跟着改变了
-	local t3 = mymodule.buildUI3(); --{5, 6, 7}  uiInstance赋值了一个新的table了，不影响t1, t2
+	--local t3 = mymodule.buildUI3(); --{5, 6, 7}  uiInstance赋值了一个新的table了，不影响t1, t2
+	--mymodule.assignNil();  --uiInstance赋nil 也不影响t1, t2,  因为uiInstance里面的键值没有给回收
+	mymodule.clear(); --uiInstance所有键值赋nil， t1, t2 里面的键值也给清空了
 	print("end"); 
 end
 main()
