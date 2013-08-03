@@ -81,7 +81,12 @@ local function main()
 	local ch = "一二三四五" --Lua不具备中文处理能力，要用unicode库
 	local len = #ch  -- 15
 	print(ch .. "len:" .. len)
-	 
+	local nStart, nEnd = string.find(ch, "二");
+	print(nStart, nEnd);
+	for i=1,string.len(ch) do
+	 local char = string.sub(str,i,i)
+	 print(char);
+	end 
 	local function tag(tag)
 		print(tag)
 	end

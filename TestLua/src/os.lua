@@ -14,5 +14,7 @@ local function main()
 		print(math.random(100));
 	end
 	
+	local enter  = "\t";
+	print(#enter);
 end
 main()
