@@ -83,10 +83,6 @@ local function main()
 	print(ch .. "len:" .. len)
 	local nStart, nEnd = string.find(ch, "二");
 	print(nStart, nEnd);
-	for i=1,string.len(ch) do
-	 local char = string.sub(str,i,i)
-	 print(char);
-	end 
 	local function tag(tag)
 		print(tag)
 	end

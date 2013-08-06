@@ -1,5 +1,4 @@
 --测试Lua的模块
-
 require("module")
 require("module2")
 
@@ -12,6 +11,8 @@ local function main()
 	mymodule.module2()  --module2  由于module和module2的键值一样，还是可以访问的
 	print(mymodule.mo); --mo是在bar()函数定义的，也是加到mymodule里面去了
 	print(mymodule.key);
+	assignName();
+	print(getName());
 	print("---------require----------")
 	local isLoader = package.loaded["require"]; --判断文件是否已经加载,如果为nil就是没有加载
 	print(isLoader);
