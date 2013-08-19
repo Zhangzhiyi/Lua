@@ -13,9 +13,14 @@ function removeAll(t)
 	end
 end
 local function main()
-
-	local t = {x = 10, y = 20};
-	t.z = 30;
+	local oa = "abc";
+	local t = {x = 10, y = 20, oa = oa}; -- oa = "abc"
+	t["1"] = "one";  --注意t["1"] 和 t [1] 是不同的
+	print(t[1]); -- nil
+	t[1] = 1;
+	print(t[1]); -- 1
+	print(t["1"]) -- one
+	t.z = 30; -- 等同于t["z"] = 30;
 	print_table(t);
 	print_index_table(t);--这个没有任何输出
 	t = {100, 200, 300, 400, 500}; --默认下标, 相当于t = {1 = 100, 2 = 200, 3 = 300, 4 = 400, 5 = 500};
