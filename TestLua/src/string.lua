@@ -22,6 +22,7 @@ local function main()
 	local s = "[in brackets]"
 	print(string.sub(s, 2, -2))     --> in brackets
 	print(string.sub(s, 2, 2))		--> i
+	print(string.sub(s, 2, 3))
 	local str = string.sub(s, 2, 1) --> start 大于 end， 返回空字符串 
 	print("str = " .. str .. " len = " .. string.len(str)) -- 空字符串
 	--string.find的基本应用就是用来在目标串（subject string）内搜索匹配指定的模式的串。函数如果找到匹配的串返回他的位置，否则返回nil.
