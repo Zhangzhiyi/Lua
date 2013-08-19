@@ -1,3 +1,4 @@
+require "functions"
 function readFile(source)
 	local file = io.open(source,"rb");
 	assert(file);
@@ -22,7 +23,8 @@ local function main()
 	local s = "[in brackets]"
 	print(string.sub(s, 2, -2))     --> in brackets
 	print(string.sub(s, 2, 2))		--> i
-	print(string.sub(s, 2, 3))
+	print(string.sub(s, 2, 3))		-->in
+	print(string.sub(s, 0, 2))		-->[i  开始下标为0 相当于下标为1
 	local str = string.sub(s, 2, 1) --> start 大于 end， 返回空字符串 
 	print("str = " .. str .. " len = " .. string.len(str)) -- 空字符串
 	--string.find的基本应用就是用来在目标串（subject string）内搜索匹配指定的模式的串。函数如果找到匹配的串返回他的位置，否则返回nil.
@@ -88,5 +90,14 @@ local function main()
 		print(tag)
 	end
 	tag("tag") -- 参数和function同名不影响
+	
+	local str = "one,two,three";
+	local split = string.split(str, ".");
+	
+	local face = "daej&72dadf&21";
+	print(#face);
+	--local nStart, nEnd, nStart2, nEnd2 = string.find(face, "%&[0-7][0-9]"); --匹配 &[0-7][0-9]
+	local nStart, nEnd, nStart2, nEnd2 = string.find(face, "%&+[0-7][]");
+	print(nStart);
 end
 main()

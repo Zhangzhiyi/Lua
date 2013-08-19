@@ -21,6 +21,7 @@ local function main()
 	t = {100, 200, 300, 400, 500}; --默认下标, 相当于t = {1 = 100, 2 = 200, 3 = 300, 4 = 400, 5 = 500};
 	table.insert(t, 6, 600);
 	print_index_table(t);
+	table.concat(t,"|",1,6);
 	print(table.concat(t,"|",1,6));
 	local a, b = unpack(t, 1, 2) --unpack(list, i, j)相当于是return list[i], list[i+1], ..., list[j]
 	print("a:" .. a, "b:" .. b)
@@ -54,9 +55,12 @@ local function main()
 	t2[2] = nil; --t1[2] = nil后面的key是不会上移的
 	print("t2 num:=" .. #t2); -- num:=3 -- t[2]置nil后 t2 的个数还是不变
 	print("t2 getn:=" .. table.getn(t2)); -- getn:3
+	local count = 0;
 	for k, v in pairs(t2) do  -- 1 1, 3 3
+		count = count + 1;
 		print(k .. " " .. v);
 	end
+	print("count = " .. count)  -- 2  正确的个数
 	for k, v in ipairs(t2) do -- 1 1  只打印了1 1， 不能打印连续下标
 		print(k .. " " .. v);
 	end
@@ -68,7 +72,7 @@ local function main()
 	if w1 == w2 then
 		print("table both");
 	else 
-		print("table not both"); -- table not both
+		print("table not both"); -- table not both (table的内存不一样)
 	end
 	local a1 = "s"
 	local a2 = "s"
@@ -87,5 +91,20 @@ local function main()
 	print_table(testRemoveAll); --没有完全清空，还有输出
 	print("testClear num:=" .. #testRemoveAll);
 	
+	--function类型数据
+	local fun = function() print("function") end
+	fun()
+	local keyTable = {1, 2, 3};
+	local funTable = {fun = "function", keyTable = "table"};  --function和table数据类型也可以当table的key
+	print(funTable.fun);
+	print(funTable.keyTable);
+	
+	local arr = {};
+	arr.index = nil;
+	arr.type = nil;
+	--注意：arr是没有index 和 type 的键值的
+	for k, v in pairs(arr) do
+		print(k);   --没有运行到此处
+	end
 end
 main()
