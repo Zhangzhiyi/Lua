@@ -10,7 +10,6 @@ function funky_print(...)
 
 end
 local function main()
-
 	if not (5>1) then --false和nil是假（false），其他为真，0也是true. nil只能和自己相等
 		print("true");	
 	else
