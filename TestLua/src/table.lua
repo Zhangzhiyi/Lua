@@ -61,13 +61,16 @@ local function main()
 	print("t2 num:=" .. #t2); -- num:=3 -- t[2]置nil后 t2 的个数还是不变
 	print("t2 getn:=" .. table.getn(t2)); -- getn:3
 	local count = 0;
-	for k, v in pairs(t2) do  -- 1 1, 3 3
+	for k, v in pairs(t2) do  -- 只打印出2个元素 
 		count = count + 1;
-		print(k .. " " .. v);
+		print(k .. " " .. v);	--1 1, 3 3
 	end
-	print("count = " .. count)  -- 2  正确的个数
+	print("count = " .. count)  -- 2 
 	for k, v in ipairs(t2) do -- 1 1  只打印了1 1， 不能打印连续下标
 		print(k .. " " .. v);
+	end
+	for i = 1, #t2 do -- 这种方式可以打印出3个元素, 以后建议用这个方式遍历table
+		print(t2[i]); --1, nil, 3
 	end
 	table.insert(t2, 4);
 	print("t2 num:=" .. #t2); -- num:=4   {1 = 1, 3 = 3, 4 = 4}
