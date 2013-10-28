@@ -42,6 +42,7 @@ local function main()
 	arr[1] = "a"
 	arr[2] = "b"
 	arr[8] = "c"
+	print_table(arr);
 	print("arr:table.getn = " .. table.getn(arr), "arr:#= " .. #arr, "arr:table.maxn = " .. table.maxn(arr))--2, 2, 8
 	print_table(arr)       -- 能打印不连续下标的值
 	print_index_table(arr) -- 不能打印不连续下标的值
@@ -74,6 +75,13 @@ local function main()
 	end
 	table.insert(t2, 4);
 	print("t2 num:=" .. #t2); -- num:=4   {1 = 1, 3 = 3, 4 = 4}
+	
+	local t3 = {1, 2, 3, 4, 5};  --测试删除后面部分键值情况
+	for i = 3, #t3 do
+		t3[i] = nil;
+	end
+	print("t3 num:=" .. table.getn(t3)); -- num:=2
+	print("t3 num:=" .. #t3); -- num:=2
 	
 	local w1 = {name = "Tom" , age = "24"};
 	local w2 = {name = "Tom" , age = "24"};

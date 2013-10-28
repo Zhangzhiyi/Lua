@@ -66,7 +66,7 @@ local function main()
 	print(string.char(i, i+1, i+2))   --> cde
 	print(string.byte("abc"))                 --> 97
 	print(string.byte("abc", 2))              --> 98
-	print(string.byte("abc", -1))             --> 99
+	print(string.byte("abc", 1, -1))             --> 99
 	
 	local text = "12345"
 	print(#text)--输出字符串长度
