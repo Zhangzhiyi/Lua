@@ -1,1 +1,2 @@
-myName = "beauty girl"
+myName = "beauty girl";
+print(myName);

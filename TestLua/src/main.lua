@@ -1,4 +1,4 @@
-require "print"
+local p = require "PrintUtils"
 
 -- 如果以...为参数, 则表示参数的数量不定.
 -- 参数将会自动存储到一个叫arg的table中.
@@ -7,10 +7,17 @@ function funky_print(...)
 	for i = 1 , arg.n do
 		print("funky: "..arg[i]);
 	end
-
+end
+function DEC_HEX(IN)
+    local B,K,OUT,I,D=16,"0123456789ABCDEF","",0
+    while IN>0 do
+        I=I+1
+        IN,D=math.floor(IN/B),math.mod(IN,B)+1
+        OUT=string.sub(K,D,D)..OUT
+    end
+    return OUT
 end
 local function main()
-
 	if not (5>1) then --false和nil是假（false），其他为真，0也是true. nil只能和自己相等
 		print("true");	
 	else
@@ -24,6 +31,7 @@ local function main()
 	
 	local object = {name = "Tom", age = 24};
 	print(object);
+	object.name = "Tom2";
 	print(object.name);
 	
 	print(sum(1, 1));
@@ -36,6 +44,10 @@ local function main()
 	print(i); --注意：循环出来i = nil;
 	--降序
 	for i = 5, 1, -1  do
+		print("i is now "..i);
+	end
+	
+	for i = 1, -1 do
 		print("i is now "..i);
 	end
 	funky_print("one", "two");
@@ -74,12 +86,15 @@ local function main()
 	local len = string.len(splitString);
 	print("len:" .. len); -- 2
 	
-	print(package.path);
 	local flag = true;
 	print(tostring(flag))
 	
-	local hex = 0x11 -- 十六进制
-	print(hex)
+	local hex = 0xffffff -- 十六进制
+	local strHex = "0xffffff";
+	print(hex) -- 16777215
+	print(tonumber(strHex)); --16777215
+	local decimal = 16777215;
+	print(DEC_HEX(decimal));
 	
 	global = 1111 --用_G[key]访问全局变量
 	local value = _G["global"]
@@ -95,6 +110,7 @@ local function main()
 		local isEnable = true
 		print(isEnable)
 	end
+	
 	
 end
 main()

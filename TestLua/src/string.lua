@@ -1,3 +1,4 @@
+require "functions"
 function readFile(source)
 	local file = io.open(source,"rb");
 	assert(file);
@@ -21,7 +22,10 @@ local function main()
 	--记住：Lua中的字符串是恒定不变的。String.sub函数以及Lua中其他的字符串操作函数都不会改变字符串的值，而是返回一个新的字符串
 	local s = "[in brackets]"
 	print(string.sub(s, 2, -2))     --> in brackets
-	local str = string.sub(s, 2, 1)
+	print(string.sub(s, 2, 2))		--> i
+	print(string.sub(s, 2, 3))		-->in
+	print(string.sub(s, 0, 2))		-->[i  开始下标为0 相当于下标为1
+	local str = string.sub(s, 2, 1) --> start 大于 end， 返回空字符串 
 	print("str = " .. str .. " len = " .. string.len(str)) -- 空字符串
 	--string.find的基本应用就是用来在目标串（subject string）内搜索匹配指定的模式的串。函数如果找到匹配的串返回他的位置，否则返回nil.
 	--最简单的模式就是一个单词，仅仅匹配单词本身。比如，模式'hello'仅仅匹配目标串中的"hello"。当查找到模式的时候，函数返回两个值：匹配串开始索引和结束索引。
@@ -30,9 +34,14 @@ local function main()
 	print(i, j)                        --> 1    5
 	print(string.sub(s, i, j))         --> hello
 	print(string.find(s, "world"))     --> 7    11
-	i, j = string.find(s, "l")
+	i, j= string.find(s, "l")
 	print(i, j)                        --> 3    3
 	print(string.find(s, "lll"))       --> nil
+	
+	local pair = "name = Anna"
+	local start, over, key, value = string.find(pair, "(%a+)%s*=%s*(%a+)")
+	print(start, over, key, value) -- 1,  11, name  Anna
+	
 	--string.gsub函数有三个参数：目标串，模式串，替换串。他基本作用是用来查找匹配模式的串，并将使用替换串其替换掉,string.gsub的第二个返回值表示他进行替换操作的次数：
 	s, count = string.gsub("Lua is cute", "cute", "great")
 	print(s, count)      --> Lua is great
@@ -42,22 +51,53 @@ local function main()
 	print(s, count)      --> Lua is great
 	--第四个参数是可选的，用来限制替换的字符次数:
 	s, count = string.gsub("aall lii", "l", "x", 5)
-	print(s, count)          --> aaxl lii
+	print(s, count)          --> aaxx xii
 	s, count = string.gsub("aall lii", "l", "x", 2)
 	print(s, count)          --> aaxx lii
 
 
-	local socket = require("socket")
-	local http = require("socket.http")
-	local body, code, headers = http.request("http://192.168.162.34/autoUPD/10/filelist.txt");
-	if code == 200 then
-		print("body:\n" .. body);
-	end
-
-	local text = "12345"
-	print(#text)--输入字符串长度
+--[[ 
+	string.char函数和string.byte函数用来将字符在字符和数字之间转换。string.char获取0个或多个整数，
+	将每一个数字转换成字符，然后返回一个所有这些字符连接起来的字符串。string.byte(s, i)将字符串s的
+	第i个字符的转换成整数；第二个参数是可选的，缺省情况下i=1。
+--]]	
+	print(string.char(97))                    --> a
+	i = 99; 
+	print(string.char(i, i+1, i+2))   --> cde
+	print(string.byte("abc"))                 --> 97
+	print(string.byte("abc", 2))              --> 98
+	print(string.byte("abc", 1, -1))             --> 99
 	
-	local format = string.format("icon_gift_%d.png", 1)
-	print(format)--输入字符串长度
+	local text = "12345"
+	print(#text)--输出字符串长度
+	
+	local reptext = string.rep(text, 3) --重复连接字符串，第二个参数是连接次数
+	print(reptext)
+	
+	local text2 = "一二三四五"
+	local reptext2 = string.rep(text2, 3) --重复连接字符串，第二个参数是连接次数
+	print(reptext2)
+	
+	local format = string.format("icon_gift_%d.png", 0)
+	print(format)
+	
+	local ch = "一二三四五" --Lua不具备中文处理能力，要用unicode库
+	local len = #ch  -- 15
+	print(ch .. "len:" .. len)
+	local nStart, nEnd = string.find(ch, "二");
+	print(nStart, nEnd);
+	local function tag(tag)
+		print(tag)
+	end
+	tag("tag") -- 参数和function同名不影响
+	
+	local str = "one,two,three";
+	local split = string.split(str, ".");
+	
+	local face = "daej&72dadf&21";
+	print(#face);
+	--local nStart, nEnd, nStart2, nEnd2 = string.find(face, "%&[0-7][0-9]"); --匹配 &[0-7][0-9]
+	local nStart, nEnd, nStart2, nEnd2 = string.find(face, "%&+[0-7][]");
+	print(nStart);
 end
 main()
