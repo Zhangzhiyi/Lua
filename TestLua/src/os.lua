@@ -12,6 +12,7 @@ local function main()
 	math.randomseed(os.time());
 	for i = 1, 10 do
 		print(math.random(100));
+		print(math.random(0,1)); --注意这里只放回0或者1
 	end
 	
 	local enter  = "\t";
